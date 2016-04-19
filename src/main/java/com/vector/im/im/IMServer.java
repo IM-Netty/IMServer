@@ -1,5 +1,8 @@
 package com.vector.im.im;
 
+import com.vector.im.handler.ByteToPacketCodec;
+import com.vector.im.handler.PacketChannelHandler;
+
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -13,6 +16,8 @@ import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.codec.LengthFieldBasedFrameDecoder;
+import io.netty.handler.codec.LengthFieldPrepender;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
 
@@ -33,6 +38,7 @@ public class IMServer{
                 instance = new IMServer();
             }
             lock.unlock();
+            lock = null;
         }
         return instance;
     }
@@ -72,16 +78,9 @@ public class IMServer{
             boot.childHandler(new ChannelInitializer<SocketChannel>() {
                 @Override
                 protected void initChannel(SocketChannel ch) throws Exception {
-                    ch.pipeline().addLast(new StringDecoder());
-                    ch.pipeline().addLast(new StringEncoder());
-
-                    ch.pipeline().addLast(new ChannelInboundHandlerAdapter() {
-                        @Override
-                        public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-                            System.out.println(msg);
-                            ctx.writeAndFlush(msg+" -- Server");
-                        }
-                    });
+                    ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(1024*1024,0,4,-4,0,false));
+                    ch.pipeline().addLast(new ByteToPacketCodec());
+                    ch.pipeline().addLast(new PacketChannelHandler());
                 }
             });
 

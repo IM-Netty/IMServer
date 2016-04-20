@@ -1,5 +1,7 @@
 package com.vector.im.im;
 
+import com.vector.im.entity.UserChannel;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.locks.Lock;
@@ -14,7 +16,7 @@ import io.netty.channel.Channel;
 public class IMChannelGroup {
     private static int sId = 0;
 
-    private Map<Integer,Channel> channels;
+    private Map<Integer,UserChannel> channels;
 
     private static IMChannelGroup instance;
     private static Lock lock = new ReentrantLock();
@@ -34,7 +36,7 @@ public class IMChannelGroup {
         channels = new HashMap<>();
     }
 
-    public synchronized  int put(Channel channel){
+    public synchronized  int put(UserChannel channel){
         sId++;
         channels.put(sId,channel);
         return sId;
@@ -44,11 +46,15 @@ public class IMChannelGroup {
         channels.remove(id);
     }
 
-    public synchronized Channel get(int id){
+    public synchronized UserChannel get(int id){
         return channels.get(id);
     }
 
     public int size() {
         return channels.size();
+    }
+
+    public Map<Integer, UserChannel> getChannels() {
+        return channels;
     }
 }

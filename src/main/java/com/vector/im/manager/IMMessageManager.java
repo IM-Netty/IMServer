@@ -18,7 +18,7 @@ public class IMMessageManager {
      */
     public static void sendSingleMsgReq(int from,ByteBuf body){
         int to = body.readInt();
-        Channel toChannel = IMChannelGroup.instance().get(to);
+        Channel toChannel = IMChannelGroup.instance().get(to).getChannel();
         if(toChannel == null){
             return;
         }

@@ -10,6 +10,8 @@ import io.netty.buffer.ByteBuf;
  */
 public class Packet {
 
+    private int userId;//这个消息谁发的
+
     private int length;//4 具体包的长度，header.length + body.length
     private short serviceId; //2 服务号
     private short commandId; //2 命令号
@@ -85,5 +87,13 @@ public class Packet {
 
     public void setBody(ByteBuf body) {
         this.body = body;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 }

@@ -37,7 +37,6 @@ public class PacketChannelHandler extends ChannelInboundHandlerAdapter {
             return;
         }
 
-
         //消息服务
         if(packet.getServiceId() == ProtocolConstant.SID_MSG){
             switch (packet.getCommandId()){

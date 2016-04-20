@@ -1,6 +1,7 @@
 package com.vector.im.im;
 
 import com.vector.im.handler.ByteToPacketCodec;
+import com.vector.im.handler.LoginChannelHandler;
 import com.vector.im.handler.PacketChannelHandler;
 
 import java.util.concurrent.locks.Lock;
@@ -73,7 +74,8 @@ public class ThreadServerSocket extends Thread{
                 protected void initChannel(SocketChannel ch) throws Exception {
                     ch.pipeline().addLast(new LengthFieldBasedFrameDecoder(1024*1024,0,4,-4,0,false));
                     ch.pipeline().addLast(new ByteToPacketCodec());
-                    ch.pipeline().addLast(new PacketChannelHandler(listener));
+                    ch.pipeline().addLast(new LoginChannelHandler(listener));
+                    ch.pipeline().addLast(new PacketChannelHandler());
                 }
             });
 

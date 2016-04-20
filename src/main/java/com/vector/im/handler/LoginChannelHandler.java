@@ -48,6 +48,8 @@ public class LoginChannelHandler extends MessageToMessageDecoder<Packet> {
     @Override
     protected void decode(ChannelHandlerContext ctx, Packet packet, List<Object> out) throws Exception {
 
+        System.out.println("packet -- "+packet.getServiceId() + ":"+packet.getCommandId());
+
         //测试服务
         if (packet.getServiceId() == ProtocolConstant.SID_TEST) {
             switch (packet.getCommandId()) {
@@ -71,8 +73,8 @@ public class LoginChannelHandler extends MessageToMessageDecoder<Packet> {
         if (packet.getServiceId() == ProtocolConstant.SID_USER) {
             if (packet.getCommandId() == ProtocolConstant.CID_USER_LOGIN_REQ) {
                 userId = IMUserManager.loginReq(ctx.channel(),packet.getBody());
+                return;
             }
-            return;
         }
 
         if(userId <= 0){

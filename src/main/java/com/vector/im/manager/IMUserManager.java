@@ -69,7 +69,8 @@ public class IMUserManager {
         //用户列表
         userChannels.forEach((userId, userChannel) -> {
             byte[] bytes = userChannel.getUsername().getBytes();
-            users.writeInt(userId).writeInt(bytes.length)
+            users.writeInt(userId)
+                    .writeInt(bytes.length)
                     .writeBytes(bytes);
         });
 

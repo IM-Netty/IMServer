@@ -6,7 +6,6 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 import io.netty.channel.Channel;
-import io.netty.channel.group.DefaultChannelGroup;
 
 /**
  * author: vector.huang
@@ -41,7 +40,15 @@ public class IMChannelGroup {
         return sId;
     }
 
+    public synchronized void remove(int id){
+        channels.remove(id);
+    }
+
     public synchronized Channel get(int id){
         return channels.get(id);
+    }
+
+    public int size() {
+        return channels.size();
     }
 }
